@@ -1,12 +1,7 @@
-# React News App
+## Client-side Setup
 
-## Setup & Run
+1. Navigate to the frontend directory: `cd news-aggregator/frontend`
 
-Clone or download the repository.
-Go to project's root directory and run following command in terminal to install dependencies:
+2. Run the following command: `docker-compose up -d`
 
-`yarn install`
-
-When this finishes, start app with:
-
-`yarn start`
+3. Open your browser and navigate to: `http://localhost:3000`
