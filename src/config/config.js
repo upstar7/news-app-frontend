@@ -1,11 +1,14 @@
-export const navbarBrand = 'News Aggregator App';
-export const header = 'News Aggregator App';
+export const navbarBrand = "News Aggregator App";
+export const header = "News Aggregator App";
 export const navs = [
-  { nav: 'Register', page: '/register', loggedIn: false },
-  { nav: 'Login', page: '/login', loggedIn: false },
+    { nav: "Register", page: "/register", loggedIn: false },
+    { nav: "Login", page: "/login", loggedIn: false },
+    { nav: "Logout", page: "/login", loggedIn: true },
 ];
 
-export const summary = 'Category, Author and Date';
-export const category = (category) => `Category: ${!category ? 'Unknown' : category}`;
-export const author = (author) => `Author: ${!author ? 'Unknown' : author}`;
-export const publishedAt = (date) => `Published at: ${new Date(date).toGMTString()}`;
+export const summary = "Category, Author and Date";
+export const category = (category) =>
+    `Category: ${!category ? "Unknown" : category}`;
+export const author = (author) => `Author: ${!author ? "Unknown" : author}`;
+export const publishedAt = (date) =>
+    `Published at: ${new Date(date).toGMTString()}`;

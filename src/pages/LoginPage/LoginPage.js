@@ -1,14 +1,43 @@
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import { Row, Col } from "react-bootstrap";
-import { useState } from "react";
-import Alert from "react-bootstrap/Alert";
-import { useNavigate } from "react-router-dom";
-import Spinner from "../Spinner/Spinner";
-import { Header, Container, JustifyCenter, formButton } from "./style";
-import HttpService from "../../services/httpService";
+import { useState, useContext } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const Login = (props) => {
+import {
+    Row,
+    Col,
+    Button,
+    Form,
+    FormGroup,
+    FormLabel,
+    FormControl,
+    Alert,
+    Spinner,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import HttpService from "../../services/httpService";
+import AuthContext from "../../context/AuthContext";
+
+const LoginContainer = styled.div`
+    padding-top: 150px;
+    margin-right: auto;
+    margin-left: auto;
+`;
+
+const RegisterLink = styled(Link)`
+    color: blue;
+    font-family: emoji;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+
+    &:hover {
+        color: red;
+        text-decoration: underline;
+    }
+`;
+
+const LoginPage = (props) => {
+    const { setToken } = useContext(AuthContext);
     const [submitted, setSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [email, setEmail] = useState("");
@@ -17,6 +46,7 @@ const Login = (props) => {
     const [emailErrors, setEmailErrors] = useState([]);
     const [passwordErrors, setPasswordErrors] = useState([]);
     const navigate = useNavigate();
+
     const reset = () => {
         setLoading(true);
         setSubmitted(true);
@@ -27,7 +57,6 @@ const Login = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        props.setProgress(15);
         reset();
         HttpService.post(
             "login",
@@ -39,10 +68,10 @@ const Login = (props) => {
         )
             .then((response) => {
                 console.log("response", response);
-                props.setProgress(70);
                 if (response.data.status.error) {
                     setErrorMessage(response.data.status.message);
                 } else {
+                    setToken(response.data.data.token);
                     localStorage.setItem("token", response.data.data.token);
                     localStorage.setItem(
                         "preferred_authors",
@@ -56,27 +85,22 @@ const Login = (props) => {
                         "preferred_sources",
                         response.data.data.user.preferred_sources
                     );
-                    props.setLoggedIn(true);
-                    setTimeout(() => {
-                        navigate("/");
-                    }, 300);
+                    navigate("/");
                 }
                 setLoading(false);
-                props.setProgress(100);
             })
             .catch((error) => {
                 setErrorMessage(
                     `Internal Server Error: ${error.response.data.status.message}`
                 );
                 setLoading(false);
-                props.setProgress(100);
             });
     };
     return (
         <>
-            <Header>Login</Header>
-            <Container>
-                <Row style={JustifyCenter}>
+            <LoginContainer>
+                {/* <h2 className="text-center text-light py-3">Login</h2> */}
+                <Row className="justify-content-center">
                     <Col sm={12} md={8} lg={4} xl={3}>
                         {errorMessage && (
                             <Alert key="danger" variant="danger">
@@ -84,11 +108,9 @@ const Login = (props) => {
                             </Alert>
                         )}
                         <Form noValidate onSubmit={handleSubmit}>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicEmail"
-                            >
-                                <Form.Control
+                            <FormGroup className="mb-3" controlId="email">
+                                <FormLabel>Email</FormLabel>
+                                <FormControl
                                     type="email"
                                     placeholder="Enter email"
                                     value={email}
@@ -105,13 +127,11 @@ const Login = (props) => {
                                         <div key={error}>{error}</div>
                                     ))}
                                 </Form.Control.Feedback>
-                            </Form.Group>
+                            </FormGroup>
 
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicPassword"
-                            >
-                                <Form.Control
+                            <FormGroup className="mb-3" controlId="password">
+                                <FormLabel>Password</FormLabel>
+                                <FormControl
                                     type="password"
                                     placeholder="Password"
                                     value={password}
@@ -128,20 +148,25 @@ const Login = (props) => {
                                         <div key={error}>{error}</div>
                                     ))}
                                 </Form.Control.Feedback>
-                            </Form.Group>
+                            </FormGroup>
+                            <div className="text-center my-3">
+                                <RegisterLink to="/register">
+                                    Click Here to Register!
+                                </RegisterLink>
+                            </div>
                             <Button
                                 variant="primary"
                                 type="submit"
-                                style={formButton}
+                                className="d-block w-100"
                             >
-                                Login
+                                {loading ? <Spinner size="sm" /> : "LogIn"}
                             </Button>
                         </Form>
                     </Col>
                 </Row>
-            </Container>
+            </LoginContainer>
         </>
     );
 };
 
-export default Login;
+export default LoginPage;

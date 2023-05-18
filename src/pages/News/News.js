@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Row, Col } from "react-bootstrap";
-import NewsItem from "../NewsItem/NewsItem";
-import Spinner from "../Spinner/Spinner";
+import NewsItem from "../../components/NewsItem/NewsItem";
+import Spinner from "../../components/Spinner/Spinner";
 import Search from "./Search";
 import Filter from "./Filter";
 import { Header, Container, card } from "./style";
@@ -23,19 +23,16 @@ function News(props) {
 
     const fetchNews = () => {
         try {
-            props.setProgress(15);
             HttpService.get(
                 "news?",
                 `search=${searchText}&page=1&${filterString}`,
                 true
             ).then((response) => {
                 setLoading(true);
-                props.setProgress(70);
                 const parsedData = response.data.data;
                 setArticles(parsedData.data);
                 setTotalResults(parsedData.total);
                 setLoading(false);
-                props.setProgress(100);
             });
         } catch (error) {
             console.error(error);

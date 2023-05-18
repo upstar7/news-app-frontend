@@ -1,13 +1,27 @@
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import { Row, Col } from "react-bootstrap";
 import { useState } from "react";
-import Alert from "react-bootstrap/Alert";
-import Spinner from "../Spinner/Spinner";
-import { Header, Container, JustifyCenter, formButton } from "./style";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import {
+    Row,
+    Col,
+    Button,
+    Form,
+    FormGroup,
+    FormLabel,
+    FormControl,
+    Alert,
+    Spinner,
+} from "react-bootstrap";
 import HttpService from "../../services/httpService";
 
-const Register = (props) => {
+const RegisterContainer = styled.div`
+    padding-top: 150px;
+    margin-right: auto;
+    margin-left: auto;
+`;
+
+const RegisterPage = (props) => {
+    const navigate = useNavigate();
     const [submitted, setSubmitted] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -30,7 +44,6 @@ const Register = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        props.setProgress(15);
         reset();
         HttpService.post(
             "register",
@@ -43,7 +56,6 @@ const Register = (props) => {
         )
             .then((response) => {
                 console.log("response", response);
-                props.setProgress(70);
                 if (response.data.status.error) {
                     if (
                         Object.keys(response.data.status.validation_errors)
@@ -69,25 +81,22 @@ const Register = (props) => {
                         setErrorMessage(response.data.status.message);
                     }
                 } else {
+                    navigate("/login");
                     setSuccessMessage(response.data.status.message);
                 }
                 setLoading(false);
-                props.setProgress(100);
             })
             .catch((error) => {
                 setErrorMessage(
                     `Internal Server Error: ${error.response.data.status.message}`
                 );
                 setLoading(false);
-                props.setProgress(100);
             });
     };
     return (
         <>
-            <Header>Register</Header>
-            {loading && <Spinner />}
-            <Container>
-                <Row style={JustifyCenter}>
+            <RegisterContainer>
+                <Row className="justify-content-center">
                     <Col sm={12} md={8} lg={4} xl={3}>
                         {successMessage && (
                             <Alert key="success" variant="success">
@@ -100,11 +109,9 @@ const Register = (props) => {
                             </Alert>
                         )}
                         <Form noValidate onSubmit={handleSubmit}>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicName"
-                            >
-                                <Form.Control
+                            <FormGroup className="mb-3" controlId="username">
+                                <FormLabel>User Name</FormLabel>
+                                <FormControl
                                     type="text"
                                     placeholder="Enter your name"
                                     value={username}
@@ -116,17 +123,15 @@ const Register = (props) => {
                                         submitted && nameErrors.length > 0
                                     }
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <FormControl.Feedback type="invalid">
                                     {nameErrors.map((error) => (
                                         <div key={error}>{error}</div>
                                     ))}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicEmail"
-                            >
-                                <Form.Control
+                                </FormControl.Feedback>
+                            </FormGroup>
+                            <FormGroup className="mb-3" controlId="email">
+                                <FormLabel>Email</FormLabel>
+                                <FormControl
                                     type="email"
                                     placeholder="Enter email"
                                     value={email}
@@ -138,18 +143,16 @@ const Register = (props) => {
                                         submitted && emailErrors.length > 0
                                     }
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <FormControl.Feedback type="invalid">
                                     {emailErrors.map((error) => (
                                         <div key={error}>{error}</div>
                                     ))}
-                                </Form.Control.Feedback>
-                            </Form.Group>
+                                </FormControl.Feedback>
+                            </FormGroup>
 
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicPassword"
-                            >
-                                <Form.Control
+                            <FormGroup className="mb-5" controlId="password">
+                                <FormLabel>Password</FormLabel>
+                                <FormControl
                                     type="password"
                                     placeholder="Password"
                                     value={password}
@@ -161,25 +164,25 @@ const Register = (props) => {
                                         submitted && passwordErrors.length > 0
                                     }
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <FormControl.Feedback type="invalid">
                                     {passwordErrors.map((error) => (
                                         <div key={error}>{error}</div>
                                     ))}
-                                </Form.Control.Feedback>
-                            </Form.Group>
+                                </FormControl.Feedback>
+                            </FormGroup>
                             <Button
+                                className="d-block w-100"
                                 variant="primary"
                                 type="submit"
-                                style={formButton}
                             >
-                                Create Account
+                                {loading ? <Spinner size="sm" /> : "Register"}
                             </Button>
                         </Form>
                     </Col>
                 </Row>
-            </Container>
+            </RegisterContainer>
         </>
     );
 };
 
-export default Register;
+export default RegisterPage;
