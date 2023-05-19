@@ -1,6 +1,6 @@
-## Client-side Setup
+## Frontend Setup
 
-1. Navigate to the frontend directory: `cd news-aggregator/frontend`
+1. git clone : https://github.com/harrisrui/news-app-frontend.git
 
 2. Run the following command: `docker-compose up -d`
 
