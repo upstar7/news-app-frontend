@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import LoadingBar from "react-top-loading-bar";
 import NavBar from "./components/NavBar/NavBar";
 import Router from "./routes";
 

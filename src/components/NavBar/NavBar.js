@@ -1,9 +1,8 @@
 import { useContext } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AuthContext from "../../context/AuthContext";
-import { navBrand, nav } from "./style";
+import "./Navbar.css";
 import { navs } from "../../config/config";
 import { setLoggedOut } from "../../utils/auth";
 import HttpService from "../../services/httpService";
@@ -26,27 +25,26 @@ function NavBar() {
 
     return (
         <Navbar
-            className="py-4"
+            className="py-3"
             bg="primary"
             variant="dark"
             expand="lg"
             fixed="top"
         >
-            <Navbar.Brand style={navBrand} href="/">
-                React/Laravel NewsApp
+            <Navbar.Brand className="brand" href="/">
+                <h2>React/Laravel NewsApp</h2>
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav style={nav} className="ml-auto">
+                <Nav className="ml-auto mr-3">
                     {navs
                         .filter((list) =>
                             token ? list.loggedIn : !list.loggedIn
                         )
                         .map((list) => (
                             <LinkContainer
+                                key={list.page}
                                 to={list.nav === "Logout" ? "" : list.page}
                                 onClick={list.nav === "Logout" ? logout : null}
-                                key={uuidv4()}
                             >
                                 <Nav.Link className="ml-2">{list.nav}</Nav.Link>
                             </LinkContainer>

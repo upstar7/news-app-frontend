@@ -3,7 +3,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
-import News from "./pages/News/News";
+import News from "./pages/NewsPage/NewsPage";
 import AuthLayout from "./layout/AuthLayout";
 
 // ----------------------------------------------------------------------

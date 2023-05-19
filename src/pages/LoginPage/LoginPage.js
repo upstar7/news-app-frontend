@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import "./LoginPage.css";
 
 import {
     Row,
@@ -16,25 +16,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import HttpService from "../../services/httpService";
 import AuthContext from "../../context/AuthContext";
-
-const LoginContainer = styled.div`
-    padding-top: 150px;
-    margin-right: auto;
-    margin-left: auto;
-`;
-
-const RegisterLink = styled(Link)`
-    color: blue;
-    font-family: emoji;
-    font-weight: bold;
-    font-size: 20px;
-    text-decoration: underline;
-
-    &:hover {
-        color: red;
-        text-decoration: underline;
-    }
-`;
 
 const LoginPage = (props) => {
     const { setToken } = useContext(AuthContext);
@@ -98,8 +79,7 @@ const LoginPage = (props) => {
     };
     return (
         <>
-            <LoginContainer>
-                {/* <h2 className="text-center text-light py-3">Login</h2> */}
+            <div className="login-container">
                 <Row className="justify-content-center">
                     <Col sm={12} md={8} lg={4} xl={3}>
                         {errorMessage && (
@@ -149,10 +129,10 @@ const LoginPage = (props) => {
                                     ))}
                                 </Form.Control.Feedback>
                             </FormGroup>
-                            <div className="text-center my-3">
-                                <RegisterLink to="/register">
+                            <div className="text-center my-4">
+                                <Link className="to-register" to="/register">
                                     Click Here to Register!
-                                </RegisterLink>
+                                </Link>
                             </div>
                             <Button
                                 variant="primary"
@@ -164,7 +144,7 @@ const LoginPage = (props) => {
                         </Form>
                     </Col>
                 </Row>
-            </LoginContainer>
+            </div>
         </>
     );
 };

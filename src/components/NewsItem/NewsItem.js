@@ -1,27 +1,46 @@
-import React from 'react';
-import { Button, Card } from 'react-bootstrap';
-import Details from './Details';
-import {
-  card, img, btn, txt
-} from './style';
+import React from "react";
+import { Button, Card, CardImg } from "react-bootstrap";
+import "./NewsItem.css";
 
-function NewsItem(props) {
-  const {
-    imageUrl, alt, description, title, author, category, date, urlNews
-  } = props;
-  return (
-    <Card style={card}>
-      <Card.Img style={img} variant="top" src={imageUrl} alt={alt} />
-      <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Card.Text style={txt}>
-          {description}
-        </Card.Text>
-        <Details author={author} category={category} date={date} />
-        <Button href={urlNews} target="_blank" style={btn}>Read more →</Button>
-      </Card.Body>
-    </Card>
-  );
-}
+const NewsItem = ({
+    imageUrl,
+    alt,
+    description,
+    title,
+    author,
+    category,
+    date,
+    urlNews,
+}) => {
+    const formatCategory = (category) =>
+        `Category: ${!category ? "Unknown" : category}`;
+    const formatAuthor = (author) => `Author: ${!author ? "Unknown" : author}`;
+    const formatPublishedAt = (date) =>
+        `Published at: ${new Date(date).toGMTString()}`;
+
+    return (
+        <Card className="card">
+            <CardImg
+                className="card-img"
+                variant="top"
+                src={imageUrl}
+                alt={alt}
+            />
+            <Card.Body>
+                <Card.Title>{title}</Card.Title>
+                <Card.Text className="card-text">{description}</Card.Text>
+                <details className="detail">
+                    <p className="summary">Category, Author and Date</p>
+                    <p className="text">{formatCategory(category)}</p>
+                    <p className="text">{formatAuthor(author)}</p>
+                    <p className="text">{formatPublishedAt(date)}</p>
+                </details>
+                <Button className="primary" href={urlNews} target="_blank">
+                    Read more →
+                </Button>
+            </Card.Body>
+        </Card>
+    );
+};
 
 export default NewsItem;

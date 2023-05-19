@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import NewsItem from "../../components/NewsItem/NewsItem";
 import Spinner from "../../components/Spinner/Spinner";
-import Search from "./Search";
-import Filter from "./Filter";
-import { Header, Container, card } from "./style";
+import SearchNews from "../../components/SearchNews/SearchNews";
+import FilterNews from "../../components/FilterNews/FilterNews";
+// import { Header, card } from "./style";
 import HttpService from "../../services/httpService";
-import { header } from "../../config/config";
+import "./NewsPage.css";
 
 function News(props) {
     const [articles, setArticles] = useState([]);
@@ -21,26 +21,25 @@ function News(props) {
 
     document.title = "News Aggregator App";
 
-    const fetchNews = () => {
-        try {
-            HttpService.get(
-                "news?",
-                `search=${searchText}&page=1&${filterString}`,
-                true
-            ).then((response) => {
-                setLoading(true);
-                const parsedData = response.data.data;
-                setArticles(parsedData.data);
-                setTotalResults(parsedData.total);
-                setLoading(false);
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     useEffect(() => {
-        fetchNews();
+        const fetchNews = (search, filter) => {
+            try {
+                HttpService.get(
+                    "news?",
+                    `search=${search}&page=1&${filter}`,
+                    true
+                ).then((response) => {
+                    setLoading(true);
+                    const parsedData = response.data.data;
+                    setArticles(parsedData.data);
+                    setTotalResults(parsedData.total);
+                    setLoading(false);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchNews(searchText, filterString);
     }, [searchText, filterString]);
 
     const fetchMoreNews = () => {
@@ -66,15 +65,17 @@ function News(props) {
 
     return (
         <>
-            <Header>{header}</Header>
             <Container>
-                <Row>
-                    <Col sm={12} md={4} lg={4} xl={3}>
-                        <Search searchNews={searchNews} />
+                <h2 className="header text-center">
+                    Welcome to visit to News Page!
+                </h2>
+                <Row className="justify-content-center">
+                    <Col sm={12} md={6}>
+                        <SearchNews searchNews={searchNews} />
                     </Col>
                 </Row>
             </Container>
-            <Filter setFilter={setFilter} />
+            <FilterNews setFilter={setFilter} />
             {loading && <Spinner />}
             <InfiniteScroll
                 dataLength={articles.length}
@@ -90,10 +91,11 @@ function News(props) {
                                 md={6}
                                 lg={4}
                                 xl={3}
-                                style={card}
+                                // style={card}
                                 key={element.id}
                             >
                                 <NewsItem
+                                    className="mb-3"
                                     title={element.title}
                                     description={element.body}
                                     author={element.author}

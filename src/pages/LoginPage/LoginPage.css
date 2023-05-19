@@ -1,0 +1,15 @@
+.login-container {
+    padding-top: 150px;
+}
+.to-register {
+    color: blue;
+    font-family: emoji;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+
+    &:hover {
+        color: red;
+        text-decoration: underline;
+    }
+}

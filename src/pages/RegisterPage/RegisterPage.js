@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
     Row,
@@ -12,13 +11,8 @@ import {
     Alert,
     Spinner,
 } from "react-bootstrap";
+import "./RegisterPage.css";
 import HttpService from "../../services/httpService";
-
-const RegisterContainer = styled.div`
-    padding-top: 150px;
-    margin-right: auto;
-    margin-left: auto;
-`;
 
 const RegisterPage = (props) => {
     const navigate = useNavigate();
@@ -95,7 +89,7 @@ const RegisterPage = (props) => {
     };
     return (
         <>
-            <RegisterContainer>
+            <div className="register-container">
                 <Row className="justify-content-center">
                     <Col sm={12} md={8} lg={4} xl={3}>
                         {successMessage && (
@@ -180,7 +174,7 @@ const RegisterPage = (props) => {
                         </Form>
                     </Col>
                 </Row>
-            </RegisterContainer>
+            </div>
         </>
     );
 };
