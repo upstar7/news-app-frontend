@@ -1,6 +1,6 @@
 ## Frontend Setup
 
-1. git clone : https://github.com/harrisrui/news-app-frontend.git
+1. git clone : https://github.com/upstar7/news-app-frontend.git
 
 2. Run the following command: `docker-compose up -d`
 
